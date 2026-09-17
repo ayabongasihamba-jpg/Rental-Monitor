@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SiteForge — Website Builder</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f8;
+    color: #172033;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* HEADER */
+
+.header {
+    height: 64px;
+    background: #111827;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.logo span {
+    color: #6d5dfc;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.header button {
+    border: none;
+    padding: 9px 15px;
+    border-radius: 8px;
+    background: #374151;
+    color: white;
+}
+
+.header .publish {
+    background: #6d5dfc;
+}
+
+/* APP */
+
+.app {
+    display: grid;
+    grid-template-columns: 310px 1fr 280px;
+    height: calc(100vh - 64px);
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    background: white;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.sidebar h2 {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.label {
+    font-size: 13px;
+    font-weight: 700;
+    margin: 15px 0 7px;
+    display: block;
+}
+
+textarea,
+input,
+select {
+    width: 100%;
+    border: 1px solid #d6d9df;
+    border-radius: 8px;
+    padding: 10px;
+    outline: none;
+}
+
+textarea {
+    height: 110px;
+    resize: vertical;
+}
+
+textarea:focus,
+input:focus,
+select:focus {
+    border-color: #6d5dfc;
+}
+
+.build {
+    width: 100%;
+    border: none;
+    background: #6d5dfc;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.build:hover {
+    background: #5748e8;
+}
+
+/* TEMPLATES */
+
+.templates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.template {
+    padding: 11px 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+}
+
+.template:hover {
+    border-color: #6d5dfc;
+}
+
+/* PREVIEW */
+
+.preview-area {
+    background: #e9edf2;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.preview-toolbar {
+    height: 55px;
+    background: white;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.preview-toolbar button {
+    border: 1px solid #ddd;
+    background: white;
+    padding: 7px 13px;
+    border-radius: 7px;
+}
+
+.preview-toolbar button.active {
+    background: #111827;
+    color: white;
+}
+
+.preview-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    overflow: auto;
+}
+
+#preview {
+    width: 100%;
+    max-width: 1100px;
+    height: 100%;
+    min-height: 600px;
+    border: none;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 25px rgba(0,0,0,.12);
+}
+
+.mobile-preview {
+    max-width: 390px !important;
+}
+
+/* SETTINGS */
+
+.settings {
+    background: white;
+    border-left: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.settings h2 {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.color-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+input[type="color"] {
+    width: 55px;
+    height: 40px;
+    padding: 2px;
+}
+
+/* EMPTY STATE */
+
+.empty {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #6b7280;
+    padding: 30px;
+}
+
+.empty h1 {
+    color: #111827;
+    margin-bottom: 10px;
+}
+
+/* TOAST */
+
+.toast {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #111827;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    display: none;
+    z-index: 1000;
+}
+
+/* MOBILE */
+
+@media(max-width: 1000px) {
+    .app {
+        grid-template-columns: 260px 1fr;
+    }
+
+    .settings {
+        display: none;
+    }
+}
+
+@media(max-width: 700px) {
+    .header {
+        padding: 0 12px;
+    }
+
+    .header-actions button:first-child {
+        display: none;
+    }
+
+    .app {
+        display: block;
+        height: auto;
+    }
+
+    .sidebar {
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .preview-area {
+        min-height: 700px;
+    }
+
+    .settings {
+        display: block;
+        border-left: none;
+        border-top: 1px solid #ddd;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="logo">Site<span>Forge</span></div>
+
+    <div class="header-actions">
+        <button onclick="saveProject()">Save</button>
+        <button onclick="exportWebsite()">⬇ Export</button>
+        <button class="publish" onclick="publishMessage()">Publish</button>
+    </div>
+</header>
+
+<div class="app">
+
+    <!-- LEFT SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <h2>Build your website</h2>
+
+        <label class="label">
+            Describe your website
+        </label>
+
+        <textarea id="prompt"
+        placeholder="Example: Create a modern website for my clothing business called FreshWear..."></textarea>
+
+        <button class="build" onclick="buildWebsite()">
+            ✨ Build Website
+        </button>
+
+        <label class="label">
+            Quick templates
+        </label>
+
+        <div class="templates">
+
+            <button class="template"
+                onclick="useTemplate('business')">
+                🏢 Business
+            </button>
+
+            <button class="template"
+                onclick="useTemplate('portfolio')">
+                🎨 Portfolio
+            </button>
+
+            <button class="template"
+                onclick="useTemplate('restaurant')">
+                🍔 Restaurant
+            </button>
+
+            <button class="template"
+                onclick="useTemplate('landing')">
+                🚀 Landing Page
+            </button>
+
+        </div>
+
+        <label class="label">
+            Project name
+        </label>
+
+        <input
+            id="projectName"
+            value="My Website"
+            placeholder="Project name">
+
+    </aside>
+
+
+    <!-- PREVIEW -->
+
+    <main class="preview-area">
+
+        <div class="preview-toolbar">
+
+            <button
+                id="desktopBtn"
+                class="active"
+                onclick="desktopView()">
+                🖥 Desktop
+            </button>
+
+            <button
+                id="mobileBtn"
+                onclick="mobileView()">
+                📱 Mobile
+            </button>
+
+        </div>
+
+        <div class="preview-container">
+
+            <div id="emptyState" class="empty">
+                <div>
+                    <h1>Create your website</h1>
+                    <p>
+                        Describe what you want on the left,
+                        then click <b>Build Website</b>.
+                    </p>
+                </div>
+            </div>
+
+            <iframe
+                id="preview"
+                style="display:none;">
+            </iframe>
+
+        </div>
+
+    </main>
+
+
+    <!-- SETTINGS -->
+
+    <aside class="settings">
+
+        <h2>Customize</h2>
+
+        <label class="label">
+            Website title
+        </label>
+
+        <input
+            id="siteTitle"
+            value="My Website"
+            oninput="updateWebsite()">
+
+        <label class="label">
+            Headline
+        </label>
+
+        <input
+            id="headline"
+            value="Build something amazing."
+            oninput="updateWebsite()">
+
+        <label class="label">
+            Description
+        </label>
+
+        <textarea
+            id="description"
+            oninput="updateWebsite()">A simple modern website built with SiteForge.</textarea>
+
+        <label class="label">
+            Button text
+        </label>
+
+        <input
+            id="buttonText"
+            value="Get Started"
+            oninput="updateWebsite()">
+
+        <label class="label">
+            Primary color
+        </label>
+
+        <div class="color-row">
+            <input
+                type="color"
+                id="primaryColor"
+                value="#6d5dfc"
+                onchange="updateWebsite()">
+
+            <span id="colorValue">
+                #6d5dfc
+            </span>
+        </div>
+
+    </aside>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+let currentTemplate = "business";
+
+
+/* -------------------------
+   TEMPLATE DATA
+------------------------- */
+
+const templates = {
+
+    business: {
+        title: "Modern Business",
+        headline: "Grow your business online.",
+        description:
+            "We help businesses create better digital experiences and reach more customers.",
+        button: "Get Started",
+        color: "#6d5dfc"
+    },
+
+    portfolio: {
+        title: "Creative Portfolio",
+        headline: "Ideas. Design. Creativity.",
+        description:
+            "Welcome to my portfolio. Explore my latest projects, creative work and experience.",
+        button: "View My Work",
+        color: "#ec4899"
+    },
+
+    restaurant: {
+        title: "Urban Kitchen",
+        headline: "Good food. Great moments.",
+        description:
+            "Fresh ingredients, delicious meals and a place to enjoy food with people you love.",
+        button: "View Menu",
+        color: "#f97316"
+    },
+
+    landing: {
+        title: "Launch Your Idea",
+        headline: "Turn your idea into reality.",
+        description:
+            "A powerful landing page for your product, application, startup or new business.",
+        button: "Start Now",
+        color: "#10b981"
+    }
+
+};
+
+
+/* -------------------------
+   USE TEMPLATE
+------------------------- */
+
+function useTemplate(name) {
+
+    currentTemplate = name;
+
+    const template = templates[name];
+
+    document.getElementById("siteTitle").value =
+        template.title;
+
+    document.getElementById("headline").value =
+        template.headline;
+
+    document.getElementById("description").value =
+        template.description;
+
+    document.getElementById("buttonText").value =
+        template.button;
+
+    document.getElementById("primaryColor").value =
+        template.color;
+
+    document.getElementById("prompt").value =
+        "Create a " + name + " website.";
+
+    buildWebsite();
+}
+
+
+/* -------------------------
+   BUILD WEBSITE
+------------------------- */
+
+function buildWebsite() {
+
+    let prompt =
+        document.getElementById("prompt")
+        .value
+        .toLowerCase();
+
+    let selected = "business";
+
+    if (
+        prompt.includes("portfolio") ||
+        prompt.includes("photographer") ||
+        prompt.includes("designer") ||
+        prompt.includes("artist")
+    ) {
+        selected = "portfolio";
+    }
+
+    else if (
+        prompt.includes("restaurant") ||
+        prompt.includes("food") ||
+        prompt.includes("cafe") ||
+        prompt.includes("coffee")
+    ) {
+        selected = "restaurant";
+    }
+
+    else if (
+        prompt.includes("landing") ||
+        prompt.includes("product") ||
+        prompt.includes("app") ||
+        prompt.includes("startup")
+    ) {
+        selected = "landing";
+    }
+
+    useTemplateData(selected);
+
+    generatePreview();
+
+    showToast("Website created!");
+}
+
+
+/* -------------------------
+   TEMPLATE DATA TO FORM
+------------------------- */
+
+function useTemplateData(name) {
+
+    currentTemplate = name;
+
+    const t = templates[name];
+
+    document.getElementById("siteTitle").value =
+        t.title;
+
+    document.getElementById("headline").value =
+        t.headline;
+
+    document.getElementById("description").value =
+        t.description;
+
+    document.getElementById("buttonText").value =
+        t.button;
+
+    document.getElementById("primaryColor").value =
+        t.color;
+}
+
+
+/* -------------------------
+   GENERATE PREVIEW
+------------------------- */
+
+function generatePreview() {
+
+    const title =
+        document.getElementById("siteTitle").value;
+
+    const headline =
+        document.getElementById("headline").value;
+
+    const description =
+        document.getElementById("description").value;
+
+    const button =
+        document.getElementById("buttonText").value;
+
+    const color =
+        document.getElementById("primaryColor").value;
+
+
+    let html = `
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>${escapeHTML(title)}</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #111827;
+}
+
+nav {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8%;
+    border-bottom: 1px solid #eee;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 21px;
+}
+
+.navlinks {
+    display: flex;
+    gap: 25px;
+}
+
+.navlinks a {
+    text-decoration: none;
+    color: #374151;
+}
+
+.hero {
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 70px 20px;
+    background:
+        linear-gradient(
+            135deg,
+            ${color}18,
+            #ffffff
+        );
+}
+
+.hero-content {
+    max-width: 800px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 7px 14px;
+    background: ${color}18;
+    color: ${color};
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: clamp(42px, 7vw, 76px);
+    line-height: 1;
+    margin: 0 0 25px;
+}
+
+.hero p {
+    color: #6b7280;
+    font-size: 19px;
+    line-height: 1.7;
+    max-width: 650px;
+    margin: auto;
+}
+
+.cta {
+    display: inline-block;
+    margin-top: 35px;
+    padding: 14px 24px;
+    background: ${color};
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+.features {
+    padding: 80px 8%;
+}
+
+.features h2 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 50px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns:
+        repeat(3, 1fr);
+    gap: 25px;
+}
+
+.card {
+    padding: 30px;
+    border: 1px solid #eee;
+    border-radius: 15px;
+}
+
+.card-icon {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: ${color}18;
+    color: ${color};
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+footer {
+    background: #111827;
+    color: white;
+    text-align: center;
+    padding: 35px;
+}
+
+@media(max-width:700px) {
+
+    .navlinks {
+        display: none;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    h1 {
+        font-size: 45px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<nav>
+
+<div class="logo">
+${escapeHTML(title)}
+</div>
+
+<div class="navlinks">
+<a href="#">Home</a>
+<a href="#about">About</a>
+<a href="#services">Services</a>
+<a href="#contact">Contact</a>
+</div>
+
+</nav>
+
+
+<section class="hero">
+
+<div class="hero-content">
+
+<div class="badge">
+Welcome
+</div>
+
+<h1>
+${escapeHTML(headline)}
+</h1>
+
+<p>
+${escapeHTML(description)}
+</p>
+
+<a class="cta" href="#contact">
+${escapeHTML(button)}
+</a>
+
+</div>
+
+</section>
+
+
+<section class="features" id="services">
+
+<h2>
+What We Offer
+</h2>
+
+<div class="cards">
+
+<div class="card">
+
+<div class="card-icon">
+★
+</div>
+
+<h3>
+Professional
+</h3>
+
+<p>
+Create a professional online presence that represents your brand.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">
+⚡
+</div>
+
+<h3>
+Fast
+</h3>
+
+<p>
+Fast, responsive and optimized for phones, tablets and computers.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">
+✓
+</div>
+
+<h3>
+Simple
+</h3>
+
+<p>
+Everything you need to get your website online quickly.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="features" id="about">
+
+<h2>
+About Us
+</h2>
+
+<p style="
+max-width:700px;
+margin:auto;
+text-align:center;
+line-height:1.8;
+color:#6b7280;
+">
+
+We create simple digital experiences that help people
+and businesses build their presence online.
+
+</p>
+
+</section>
+
+
+<footer id="contact">
+
+<p>
+© ${new Date().getFullYear()}
+${escapeHTML(title)}.
+All rights reserved.
+</p>
+
+</footer>
+
+
+</body>
+
+</html>
+
+`;
+
+    const iframe =
+        document.getElementById("preview");
+
+    iframe.srcdoc = html;
+
+    iframe.style.display = "block";
+
+    document.getElementById("emptyState")
+        .style.display = "none";
+
+    window.generatedWebsite = html;
+
+    document.getElementById("colorValue")
+        .textContent = color;
+}
+
+
+/* -------------------------
+   UPDATE
+------------------------- */
+
+function updateWebsite() {
+
+    if (window.generatedWebsite) {
+        generatePreview();
+    }
+
+}
+
+
+/* -------------------------
+   DESKTOP
+------------------------- */
+
+function desktopView() {
+
+    const preview =
+        document.getElementById("preview");
+
+    preview.classList.remove("mobile-preview");
+
+    document.getElementById("desktopBtn")
+        .classList.add("active");
+
+    document.getElementById("mobileBtn")
+        .classList.remove("active");
+}
+
+
+/* -------------------------
+   MOBILE
+------------------------- */
+
+function mobileView() {
+
+    const preview =
+        document.getElementById("preview");
+
+    preview.classList.add("mobile-preview");
+
+    document.getElementById("mobileBtn")
+        .classList.add("active");
+
+    document.getElementById("desktopBtn")
+        .classList.remove("active");
+}
+
+
+/* -------------------------
+   EXPORT WEBSITE
+------------------------- */
+
+function exportWebsite() {
+
+    if (!window.generatedWebsite) {
+        showToast("Build a website first.");
+        return;
+    }
+
+    const blob =
+        new Blob(
+            [window.generatedWebsite],
+            {type: "text/html"}
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    let name =
+        document.getElementById("projectName")
+        .value
+        .trim()
+        .replace(/[^a-z0-9]/gi, "-")
+        .toLowerCase();
+
+    if (!name) {
+        name = "my-website";
+    }
+
+    a.download =
+        name + ".html";
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+    showToast("Website exported!");
+}
+
+
+/* -------------------------
+   SAVE PROJECT
+------------------------- */
+
+function saveProject() {
+
+    const project = {
+
+        name:
+            document.getElementById("projectName")
+            .value,
+
+        title:
+            document.getElementById("siteTitle")
+            .value,
+
+        headline:
+            document.getElementById("headline")
+            .value,
+
+        description:
+            document.getElementById("description")
+            .value,
+
+        button:
+            document.getElementById("buttonText")
+            .value,
+
+        color:
+            document.getElementById("primaryColor")
+            .value
+
+    };
+
+    localStorage.setItem(
+        "siteforgeProject",
+        JSON.stringify(project)
+    );
+
+    showToast("Project saved!");
+}
+
+
+/* -------------------------
+   LOAD PROJECT
+------------------------- */
+
+function loadProject() {
+
+    const saved =
+        localStorage.getItem(
+            "siteforgeProject"
+        );
+
+    if (!saved) {
+        return;
+    }
+
+    const project =
+        JSON.parse(saved);
+
+    document.getElementById("projectName")
+        .value = project.name || "My Website";
+
+    document.getElementById("siteTitle")
+        .value = project.title || "My Website";
+
+    document.getElementById("headline")
+        .value =
+        project.headline ||
+        "Build something amazing.";
+
+    document.getElementById("description")
+        .value =
+        project.description ||
+        "A modern website.";
+
+    document.getElementById("buttonText")
+        .value =
+        project.button ||
+        "Get Started";
+
+    document.getElementById("primaryColor")
+        .value =
+        project.color ||
+        "#6d5dfc";
+
+    generatePreview();
+}
+
+
+/* -------------------------
+   PUBLISH
+------------------------- */
+
+function publishMessage() {
+
+    alert(
+        "Your website is ready to publish!\\n\\n" +
+        "For now, use Export to download the website. " +
+        "You can upload the exported index.html to " +
+        "GitHub Pages or another hosting service."
+    );
+
+}
+
+
+/* -------------------------
+   HTML ESCAPE
+------------------------- */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* -------------------------
+   TOAST
+------------------------- */
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.style.display = "block";
+
+    setTimeout(function() {
+        toast.style.display = "none";
+    }, 2500);
+
+}
+
+
+/* -------------------------
+   START
+------------------------- */
+
+window.addEventListener(
+    "load",
+    loadProject
+);
+
+</script>
+
+</body>
+</html>
